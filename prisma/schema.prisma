@@ -60,16 +60,29 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
+enum Category {
+  WORK
+  PERSONAL
+}
+
 enum TodoStatus {
   PENDING
   IN_PROGRESS
   COMPLETED
 }
 
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
 model Todo {
   id         String     @id @default(cuid())
   title      String
+  category   Category   @default(WORK)
   status     TodoStatus @default(PENDING)
+  priority   Priority   @default(MEDIUM)
   createdAt  DateTime   @default(now())
   updateTime DateTime   @updatedAt
 

@@ -11,7 +11,7 @@ interface UserInfoProps {
 export default function UserInfo({ user, size, className }: UserInfoProps) {
   return (
     <div
-      className={`text-muted-foreground flex items-center gap-2 text-sm font-semibold ${className}`}
+      className={`text-muted-foreground flex items-center gap-2 font-semibold ${className}`}
     >
       <Image
         src={user.image || ""}

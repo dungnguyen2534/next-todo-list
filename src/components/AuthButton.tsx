@@ -2,13 +2,12 @@ import { signIn, signOut } from "@/app/auth";
 import { Button } from "./ui/button";
 import React from "react";
 
-interface AuthButtonProps {
-  content?: React.ReactNode;
-  className?: string;
-  variant?: "default" | "outline" | "ghost" | "link" | "destructive";
-}
-
-export function SignInButton({ variant, className, content }: AuthButtonProps) {
+export function SignInButton({
+  variant,
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof Button>) {
   return (
     <form
       action={async () => {
@@ -21,8 +20,9 @@ export function SignInButton({ variant, className, content }: AuthButtonProps) {
         variant={variant}
         className={className}
         type="submit"
+        {...props}
       >
-        {content ? content : "Sign in with Google"}
+        {children ? children : "Sign in with Google"}
       </Button>
     </form>
   );
@@ -31,8 +31,9 @@ export function SignInButton({ variant, className, content }: AuthButtonProps) {
 export function SignOutButton({
   variant,
   className,
-  content,
-}: AuthButtonProps) {
+  children,
+  ...props
+}: React.ComponentProps<typeof Button>) {
   return (
     <form
       action={async () => {
@@ -45,8 +46,9 @@ export function SignOutButton({
         variant={variant}
         className={className}
         type="submit"
+        {...props}
       >
-        {content ? content : "Sign out"}
+        {children ? children : "Sign out"}
       </Button>
     </form>
   );
