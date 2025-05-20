@@ -103,7 +103,7 @@ export default function Todo({ todo }: TodoProps) {
   };
 
   return (
-    <div className="hover:border-primary relative flex flex-col justify-between rounded-md border-1 px-2 py-1">
+    <div className="hover:border-primary relative flex flex-col justify-between rounded-md border-1 px-0 py-1 sm:px-2">
       <div>
         <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>
           <DropdownMenu modal={false}>
@@ -312,7 +312,7 @@ export default function Todo({ todo }: TodoProps) {
           </DialogContent>
         </Dialog>
       </div>
-      <p className="w-[97%] truncate pt-2 pl-3 text-gray-800 dark:text-gray-200">
+      <p className="w-[88%] truncate pt-2 pl-3 text-sm text-gray-800 sm:text-base md:w-[95%] dark:text-gray-200">
         {todo.title}
       </p>
       <TodoLabels todo={todo} />
