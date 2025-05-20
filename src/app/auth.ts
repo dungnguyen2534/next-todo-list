@@ -10,7 +10,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
+
+        const dbUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          include: {
+            _count: { select: { Todo: true } },
+          },
+        });
+        session.user.todoCount = dbUser?._count.Todo ?? 0;
       }
+
       return session;
     },
   },

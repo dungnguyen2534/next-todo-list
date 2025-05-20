@@ -15,17 +15,12 @@ import { $Enums } from "@prisma/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import LoadingButton from "./LoadingButton";
+import { useTodoContext } from "@/app/todo-context";
+import { TodoInput } from "@/types/type";
 
 interface AddTodoFormProps {
   className?: string;
 }
-
-type TodoInput = {
-  title: string;
-  category: $Enums.Category;
-  status: $Enums.TodoStatus;
-  priority: $Enums.Priority;
-};
 
 export default function AddTodoForm({ className }: AddTodoFormProps) {
   const [todoInput, setTodoInput] = useState<TodoInput>({
@@ -38,17 +33,20 @@ export default function AddTodoForm({ className }: AddTodoFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  const { setContextTodos } = useTodoContext();
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (todoInput.title.trim() === "") return;
 
     startTransition(async () => {
       try {
-        await createTodo(todoInput);
+        const newTodo = await createTodo(todoInput);
+        setContextTodos((prev) => [newTodo, ...prev]);
         router.replace("/");
-        toast("Todo created");
+        toast.success("Todo created");
       } catch {
-        toast.error("Failed to create todo");
+        toast.error("Something went wrong. Please try again.");
       }
     });
   };
@@ -138,7 +136,7 @@ export default function AddTodoForm({ className }: AddTodoFormProps) {
         className="mt-5 sm:mt-3 sm:ml-auto sm:w-20"
         title="Add this todo to your list"
       >
-        Add
+        Save
       </LoadingButton>
     </form>
   );

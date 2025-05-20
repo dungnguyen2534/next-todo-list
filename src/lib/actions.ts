@@ -16,12 +16,14 @@ export async function createTodo(input: {
   if (!session?.user) throw new Error("Unauthorized");
 
   try {
-    await prisma.todo.create({
+    const newTodo = await prisma.todo.create({
       data: {
         ...input,
         userId: session.user.id!,
       },
     });
+
+    return newTodo;
   } catch (error) {
     console.log("Error in createTodo action:" + error);
     throw new Error("Database error");

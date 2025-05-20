@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
+import { TodoContextProvider } from "./todo-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-primary dark:bg-primary-foreground flex h-dvh flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-primary flex h-dvh flex-col antialiased`}
       >
         <SessionProvider>
           <ThemeProvider
@@ -37,8 +38,17 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
-            <Toaster />
+            <TodoContextProvider>{children}</TodoContextProvider>
+            <Toaster
+              richColors
+              icons={{
+                success: null,
+                info: null,
+                warning: null,
+                error: null,
+                loading: null,
+              }}
+            />
           </ThemeProvider>
         </SessionProvider>
       </body>
