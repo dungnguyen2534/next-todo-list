@@ -20,10 +20,7 @@ export default function TodoList({ user, className }: TodoListProps) {
     const signal = controller.signal;
 
     const fetchData = async () => {
-      if (contextTodos.length) {
-        setIsLoaded(true);
-        return;
-      }
+      if (isLoaded) return;
 
       try {
         const res = await fetch(`/api/users/${user.id}/todos`, { signal });
@@ -45,7 +42,7 @@ export default function TodoList({ user, className }: TodoListProps) {
 
     fetchData();
     return () => controller.abort();
-  }, [user.id, setContextTodos, contextTodos.length, setIsLoaded]);
+  }, [user.id, setContextTodos, setIsLoaded, isLoaded]);
 
   return (
     <div className={`space-y-2 ${className}`}>

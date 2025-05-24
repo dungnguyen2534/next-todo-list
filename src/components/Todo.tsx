@@ -51,7 +51,7 @@ export default function Todo({ todo }: TodoProps) {
   async function handleEdit(updatedFields: Partial<TodoType>) {
     if (isUpdating) return; // Prevent spamming
     setIsUpdating(true);
-    const prevTodos = contextTodos;
+    const prevTodos = [...contextTodos];
     const prevTargetTodoInfo = editTodoInput;
 
     setContextTodos((prev) => {
@@ -83,7 +83,7 @@ export default function Todo({ todo }: TodoProps) {
   }
 
   async function handleDelete() {
-    const prevTodos = contextTodos;
+    const prevTodos = [...contextTodos];
     setContextTodos((todos) => todos.filter((t) => t.id !== todo.id));
 
     const res = await fetch(`/api/todos/${todo.id}`, {
