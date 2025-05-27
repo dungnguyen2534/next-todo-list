@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Input } from "./ui/input";
 import {
   Select,
@@ -10,30 +10,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { createTodo } from "@/lib/actions";
+import { createTodo } from "@/app/new/actions";
 import { $Enums } from "@prisma/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import LoadingButton from "./LoadingButton";
 import { useTodoContext } from "@/app/todo-context";
 import { TodoInput } from "@/types/type";
+import { useSession } from "next-auth/react";
 
 interface AddTodoFormProps {
   className?: string;
 }
 
 export default function AddTodoForm({ className }: AddTodoFormProps) {
+  const { data } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!data?.user) {
+      router.replace("/login");
+    }
+  }, [data, router]);
+
+  const { setContextTodos } = useTodoContext();
+  const [isPending, startTransition] = useTransition();
   const [todoInput, setTodoInput] = useState<TodoInput>({
     title: "",
     category: $Enums.Category.WORK,
     status: $Enums.TodoStatus.PENDING,
     priority: $Enums.Priority.MEDIUM,
   });
-
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-
-  const { setContextTodos } = useTodoContext();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

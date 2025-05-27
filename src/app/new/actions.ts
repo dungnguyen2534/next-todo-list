@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/app/auth";
-import { prisma } from "./prisma";
+import { prisma } from "../../lib/prisma";
 import { Category, Priority, TodoStatus } from "@prisma/client";
 
 export async function createTodo(input: {
@@ -28,16 +28,4 @@ export async function createTodo(input: {
     console.log("Error in createTodo action:" + error);
     throw new Error("Database error");
   }
-}
-
-export async function getTodos() {
-  const session = await auth();
-  if (!session?.user) return;
-
-  const todos = await prisma.todo.findMany({
-    where: { userId: session.user.id },
-    orderBy: { createdAt: "desc" },
-  });
-
-  return todos;
 }
